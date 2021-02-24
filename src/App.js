@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { StatusBar } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import FlashMessage from 'react-native-flash-message';
 
 import '@i18n/index';
 import '@config/ReactotronConfig';
@@ -20,6 +21,8 @@ const App = () => {
           <StatusBar barStyle="dark-content" />
 
           <MainNavigator />
+
+          <FlashMessage position="top" />
         </NavigationContainer>
       </PersistGate>
     </Provider>
