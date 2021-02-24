@@ -1,9 +1,9 @@
 import * as AppTypes from './types';
 
-export function signInRequest(email, password) {
+export function signInRequest(username, password) {
   return {
     type: AppTypes.SIGN_IN_REQUEST,
-    payload: { email, password },
+    payload: { username, password },
   };
 }
 

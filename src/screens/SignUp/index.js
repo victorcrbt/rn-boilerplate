@@ -1,6 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useCallback, useState, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useState, useCallback } from 'react';
 import {
   SafeAreaView,
   TextInput,
@@ -10,30 +9,50 @@ import {
 } from 'react-native';
 import PropTypes from 'prop-types';
 
+import UsersRepository from '@repositories/UsersRepository';
 import useFocusInput from '@hooks/useFocusInput';
-import { signInRequest } from '@store/modules/auth/actions';
+import mainRealm from '@database/main';
 
-const Home = ({ navigation }) => {
-  const dispatch = useDispatch();
-
+const SignUp = ({ navigation }) => {
+  const [usernameInputRef, focusUsernameInput] = useFocusInput();
   const [passwordInputRef, focusPasswordInput] = useFocusInput();
 
+  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSignIn = useCallback(
-    () => dispatch(signInRequest(username, password)),
-    [dispatch, username, password]
-  );
+  const handleSignUp = useCallback(() => {
+    const usersRepository = new UsersRepository(mainRealm);
 
-  const handleNavigateToCreateAccount = useCallback(
-    () => navigation.navigate('SignUp'),
-    [navigation]
-  );
+    try {
+      usersRepository.insert({ name, username, password });
+
+      console.log('Usuário cadastrado com sucesso!');
+
+      navigation.navigate('Home');
+    } catch (error) {
+      if (__DEV__) {
+        console.log(error);
+      }
+    }
+  }, [name, username, password, navigation]);
+
+  const handleNavigateToHome = useCallback(() => navigation.navigate('Home'), [
+    navigation,
+  ]);
 
   return (
     <SafeAreaView style={styles.container}>
       <TextInput
+        style={styles.input}
+        placeholder="Digite seu nome..."
+        value={name}
+        onChangeText={setName}
+        returnKeyType="next"
+        onSubmitEditing={focusUsernameInput}
+      />
+      <TextInput
+        ref={usernameInputRef}
         style={styles.input}
         placeholder="Digite seu username..."
         value={username}
@@ -48,17 +67,15 @@ const Home = ({ navigation }) => {
         value={password}
         onChangeText={setPassword}
         secureTextEntry
-        onSubmitEditing={handleSignIn}
+        onSubmitEditing={handleSignUp}
       />
 
-      <Pressable style={styles.signInButton} onPress={handleSignIn}>
-        <Text style={styles.signInButtonText}>ENTRAR</Text>
+      <Pressable onPress={handleSignUp} style={styles.signUpButton}>
+        <Text style={styles.signUpButtonText}>CADASTRAR</Text>
       </Pressable>
 
-      <Pressable
-        style={styles.createAccountButton}
-        onPress={handleNavigateToCreateAccount}>
-        <Text style={styles.createAccountButtonText}>CRIAR CONTA</Text>
+      <Pressable onPress={handleNavigateToHome} style={styles.signInButton}>
+        <Text style={styles.signInButtonText}>FAZER LOGIN</Text>
       </Pressable>
     </SafeAreaView>
   );
@@ -76,7 +93,7 @@ const styles = StyleSheet.create({
     borderColor: '#999',
   },
 
-  signInButton: {
+  signUpButton: {
     height: 48,
     marginVertical: 8,
     justifyContent: 'center',
@@ -84,13 +101,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#7711c8',
   },
 
-  signInButtonText: {
+  signUpButtonText: {
     fontWeight: 'bold',
     fontSize: 16,
     color: '#fff',
   },
 
-  createAccountButton: {
+  signInButton: {
     height: 48,
     marginVertical: 8,
     justifyContent: 'center',
@@ -98,17 +115,17 @@ const styles = StyleSheet.create({
     backgroundColor: '#037bfc',
   },
 
-  createAccountButtonText: {
+  signInButtonText: {
     fontWeight: 'bold',
     fontSize: 16,
     color: '#fff',
   },
 });
 
-Home.propTypes = {
+SignUp.propTypes = {
   navigation: PropTypes.shape({
     navigate: PropTypes.func.isRequired,
   }).isRequired,
 };
 
-export default Home;
+export default SignUp;
