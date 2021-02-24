@@ -12,6 +12,10 @@ import PropTypes from 'prop-types';
 import UsersRepository from '@repositories/UsersRepository';
 import useFocusInput from '@hooks/useFocusInput';
 import mainRealm from '@database/main';
+import {
+  successNotification,
+  warningNotification,
+} from '@helpers/notifications';
 
 const SignUp = ({ navigation }) => {
   const [usernameInputRef, focusUsernameInput] = useFocusInput();
@@ -25,9 +29,20 @@ const SignUp = ({ navigation }) => {
     const usersRepository = new UsersRepository(mainRealm);
 
     try {
+      const usernameAlreadyUsed = usersRepository.findByUsername(username);
+
+      if (usernameAlreadyUsed) {
+        return warningNotification('O nome de usuário já está em uso', {
+          position: 'bottom',
+          duration: 5000,
+        });
+      }
+
       usersRepository.insert({ name, username, password });
 
-      console.log('Usuário cadastrado com sucesso!');
+      successNotification('Usuário cadastrado com sucesso!', {
+        position: 'bottom',
+      });
 
       navigation.navigate('Home');
     } catch (error) {

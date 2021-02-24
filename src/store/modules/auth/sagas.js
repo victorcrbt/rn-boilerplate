@@ -2,6 +2,7 @@ import { all, put, takeLatest } from 'redux-saga/effects';
 
 import mainRealm from '@database/main';
 import UsersRepository from '@repositories/UsersRepository';
+import { warningNotification } from '@helpers/notifications';
 
 import * as AppTypes from './types';
 import { signInSuccess, signInFailure, signOutSuccess } from './actions';
@@ -14,11 +15,11 @@ function* signIn({ payload }) {
     const user = usersRepository.findByUsername(username);
 
     if (!user) {
-      throw new Error('Invalid credentials.');
+      throw new Error('Credenciais inválidas.');
     }
 
     if (user.password !== password) {
-      throw new Error('Invalid credentials.');
+      throw new Error('Credenciais inválidas.');
     }
 
     yield put(signInSuccess());
@@ -27,6 +28,7 @@ function* signIn({ payload }) {
       console.log(error);
     }
 
+    warningNotification(error.message, { position: 'bottom' });
     yield put(signInFailure());
   }
 }
