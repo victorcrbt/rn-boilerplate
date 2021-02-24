@@ -21,6 +21,7 @@ module.exports = {
   },
   plugins: ['react', 'prettier', 'react-hooks', 'jsx-a11y', 'import'],
   rules: {
+    'lines-between-class-members': 'off',
     'no-restricted-syntax': 'off',
     'class-methods-use-this': 'off',
     'import/extensions': [
@@ -97,6 +98,10 @@ module.exports = {
         {
           rootPathPrefix: '@database/',
           rootPathSuffix: 'src/database',
+        },
+        {
+          rootPathPrefix: '@repositories/',
+          rootPathSuffix: 'src/repositories',
         },
         {
           rootPathPrefix: '@i18n/',
