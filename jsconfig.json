@@ -12,6 +12,7 @@
       "@hooks/*": ["./hooks/*"],
       "@contexts/*": ["./contexts/*"],
       "@database/*": ["./database/*"],
+      "@repositories/*": ["./repositories/*"],
       "@i18n/*": ["./i18n/*"],
       "@constants/*": ["./constants/*"]
     }

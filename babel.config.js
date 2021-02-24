@@ -45,6 +45,10 @@ module.exports = {
             rootPathSuffix: 'src/database',
           },
           {
+            rootPathPrefix: '@repositories/',
+            rootPathSuffix: 'src/repositories',
+          },
+          {
             rootPathPrefix: '@i18n/',
             rootPathSuffix: 'src/i18n',
           },
