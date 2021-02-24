@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "~/*": ["*"],
+      "@screens/*": ["./screens/*"],
+      "@config/*": ["./config/*"],
+      "@helpers/*": ["./helpers/*"],
+      "@services/*": ["./services/*"],
+      "@components/*": ["./components/*"],
+      "@store/*": ["./store/*"],
+      "@hooks/*": ["./hooks/*"],
+      "@contexts/*": ["./contexts/*"],
+      "@database/*": ["./database/*"],
+      "@repositories/*": ["./repositories/*"],
+      "@i18n/*": ["./i18n/*"],
+      "@constants/*": ["./constants/*"]
+    }
+  }
+}
